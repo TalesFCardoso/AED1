@@ -33,7 +33,7 @@ int verificacao(int mat[9][9]) {
         }
     }
      
-     // Verificação dos blocos 3x3
+     // Verificação das regiões 3x3
     for(int blocoI = 0; blocoI < 3; blocoI++) {
         for(int blocoJ = 0; blocoJ < 3; blocoJ++) {
             int submatriz[10] = {0}; 
