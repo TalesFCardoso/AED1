@@ -6,5 +6,5 @@ int main() {
     
     scanf("%i",&a);
     scanf("%i",&b);
-    printf("X = %i\n",a+b);
+    printf("X = %i\n",a+b); // Devolve a soma dos valores inseridos a e b
 }
