@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <string.h>
+
+long long int ValorFatorial[21];
+
+long long int fatorial(int f){ //Calcula o fatorial de um inteiro fornecido, utilizando da recursão para chegar ao valor desejado 
+    if (ValorFatorial[f] == 0)
+    ValorFatorial[f] = f * fatorial(f - 1);
+    return ValorFatorial[f];
+
+}
+
+int main() {
+
+    long int m,n;
+
+
+    memset(ValorFatorial, 0, sizeof(ValorFatorial)); //Garante com que o vetor inicialize com nenhum resíduo dentro da memória ao rodar o programa, realizando o cálculo da soma dos fatoriais apropriadamente 
+    ValorFatorial[0] = 1;
+
+    while (scanf("%d %d", &m, &n) != EOF) //Realiza a leitura de dois valores indicados, que continuará lendo enquanto conseguir realizar a leitura de ambos. End of File (EOF) é utilizado para indicar o fim da entrada. 
+    {
+        printf("%lld\n",fatorial(m) + fatorial(n));
+    }
+
+    return 0;
+
+}
