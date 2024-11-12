@@ -21,11 +21,12 @@ int verifica_parenteses(const char *expressao) {
 }
 
 int main() {
-    char expressoes[5][100]; // Define uma matriz para armazenar até 5 expressões com no máximo 99 caracteres cada
+    int N = 100;
+    char expressoes[N][1001]; // Define uma matriz para armazenar N expressões com no máximo 1000 caracteres cada
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < N; i++) {
         printf("Digite a expressao %d: ", i + 1);
-        scanf("%99s", expressoes[i]); // Lê a expressão e limita a entrada a 99 caracteres para evitar overflow
+        scanf("%999s", expressoes[i]); // Lê a expressão e limita a entrada a 99 caracteres para evitar overflow
         if (verifica_parenteses(expressoes[i])) {
             printf("correct\n");
         } else {
