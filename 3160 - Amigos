@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define TAM_NOME 20
+
+// Função para adicionar um amigo dinamicamente à lista
+void adicionar_amigo(char ***lista, int *total, const char *nome) {
+    *lista = realloc(*lista, (*total + 1) * sizeof(char *)); // Redimensiona a lista
+    (*lista)[*total] = malloc((strlen(nome) + 1) * sizeof(char)); // Aloca espaço para o novo nome
+    strcpy((*lista)[*total], nome); // Copia o nome para a lista
+    (*total)++; // Incrementa o total de amigos
+}
+
+// Função para liberar a memória da lista de amigos
+void liberar_lista(char **lista, int total) {
+    for (int i = 0; i < total; i++) {
+        free(lista[i]); // Libera cada nome
+    }
+    free(lista); // Libera a lista
+}
+
+int main() {
+    char **lista_atual = NULL; // Lista atual de amigos de Luiggy (dinâmica)
+    char **nova_lista = NULL;  // Nova lista de amigos a ser adicionada (dinâmica)
+    char nome_indicacao[TAM_NOME];
+    int total_atual = 0, total_nova = 0;
+
+    // Leitura da lista atual de amigos de Luiggy
+    char linha[200];
+    fgets(linha, sizeof(linha), stdin);
+    char *token = strtok(linha, " \n");
+    while (token != NULL) {
+        adicionar_amigo(&lista_atual, &total_atual, token);
+        token = strtok(NULL, " \n");
+    }
+
+    // Leitura da nova lista de amigos
+    fgets(linha, sizeof(linha), stdin);
+    token = strtok(linha, " \n");
+    while (token != NULL) {
+        adicionar_amigo(&nova_lista, &total_nova, token);
+        token = strtok(NULL, " \n");
+    }
+
+    // Leitura do nome do amigo para indicação
+    fgets(nome_indicacao, sizeof(nome_indicacao), stdin);
+    nome_indicacao[strcspn(nome_indicacao, "\n")] = 0; // Remove o '\n' final
+
+    // Se o nome de indicação é "nao", apenas adiciona ao final
+    if (strcmp(nome_indicacao, "nao") == 0) {
+        for (int i = 0; i < total_nova; i++) {
+            adicionar_amigo(&lista_atual, &total_atual, nova_lista[i]);
+        }
+    } else {
+        // Procura o índice do amigo para inserir a nova lista antes dele
+        int posicao_indicacao = -1;
+        for (int i = 0; i < total_atual; i++) {
+            if (strcmp(lista_atual[i], nome_indicacao) == 0) {
+                posicao_indicacao = i;
+                break;
+            }
+        }
+
+        // Se encontrou o amigo para indicar, insere a nova lista antes dele
+        if (posicao_indicacao != -1) {
+            // Realoca espaço suficiente para mover a lista atual
+            lista_atual = realloc(lista_atual, (total_atual + total_nova) * sizeof(char *));
+            
+            // Move a lista atual para dar espaço para a nova lista
+            for (int i = total_atual - 1; i >= posicao_indicacao; i--) {
+                lista_atual[i + total_nova] = lista_atual[i];
+            }
+
+            // Insere a nova lista na posição correta
+            for (int i = 0; i < total_nova; i++) {
+                lista_atual[posicao_indicacao + i] = malloc((strlen(nova_lista[i]) + 1) * sizeof(char));
+                strcpy(lista_atual[posicao_indicacao + i], nova_lista[i]);
+            }
+            total_atual += total_nova;
+        } else {
+            // Se não encontrou, apenas adiciona no final
+            for (int i = 0; i < total_nova; i++) {
+                adicionar_amigo(&lista_atual, &total_atual, nova_lista[i]);
+            }
+        }
+    }
+
+    // Exibe a lista atualizada
+    for (int i = 0; i < total_atual; i++) {
+        printf("%s", lista_atual[i]);
+        if (i < total_atual - 1) printf(" ");
+    }
+    printf("\n");
+
+    // Libera a memória alocada
+    liberar_lista(lista_atual, total_atual);
+    liberar_lista(nova_lista, total_nova);
+
+    return 0;
+}
