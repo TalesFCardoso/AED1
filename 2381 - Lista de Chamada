@@ -5,27 +5,27 @@
 
 
 
-int comp(const void *a, const void *b) {
-    return strcmp((const char *)a, (const char *)b);
+int comp(const void *a, const void *b) { // Função de comparação para "Quick Sort"
+    return strcmp((const char *)a, (const char *)b); 
 }
 
 int main() {
     
-    const int MAX_ALUNOS = 100;
+    const int MAX_ALUNOS = 100; // Definindo os limites como variáveis locais
     const int MAX_NOME = 21;
     
     int N, K;
     char nomes[MAX_ALUNOS][MAX_NOME];
 
-    scanf("%d %d", &N, &K);
+    scanf("%d %d", &N, &K); // Leitura das variáveis 'N' e 'K'
 
     for (int i = 0; i < N; i++) {
         scanf("%s", nomes[i]);
     }
 
-    qsort(nomes, N, MAX_NOME, comp);
+    qsort(nomes, N, MAX_NOME, comp); // Ordenando os nomes em ordem alfabética com "Quick Sort"
 
-    printf("%s\n", nomes[K - 1]);
+    printf("%s\n", nomes[K - 1]); // Por fim, será imprimido o nome do Kº aluno da lista
 
     return 0;
 }
